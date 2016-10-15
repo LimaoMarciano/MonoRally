@@ -14,5 +14,9 @@ public class SimpleController : MonoBehaviour {
 	void Update () {
 		float hInput = Input.GetAxis ("Horizontal");
 		engine.SetInput (hInput);
+
+		if (Input.GetButtonDown ("Fire1")) {
+			engine.ToggleCluth ();
+		}
 	}
 }

@@ -3,62 +3,69 @@ using System.Collections;
 
 public class Engine : MonoBehaviour {
 
+	[Header("Settings")]
 	public float maxSpeed;
 	public float maxTorque;
+	public float engineBrakeForce;
 	public AnimationCurve torqueCurve;
-	public WheelJoint2D wheelJoint;
 
-	public float force;
-	public float engineDrag;
-	public float wheelDrag;
+	[Header("Components")]
+	public WheelJoint2D wheelJoint;
+	public Rigidbody2D wheelRb;
+	public WheelGroundDetector groundDetector;
 
 	private float input;
 	private float speed = 0;
 	private float torque;
+	private float engineBrakeTorque;
+	private float engineBrakeDrag;
+	private float wheelAngularDrag;
 
+	private float smoothV = 0;
+
+	private JointMotor2D mt = new JointMotor2D();
 	public bool isEngineClutched = true;
 
 	// Use this for initialization
 	void Start () {
-	
+		wheelAngularDrag = wheelRb.angularDrag;
 	}
 	
 	// Update is called once per frame
-	void Update () {
-		float wheelSpeedDif;
-
-
-
-		float dragforce = (Mathf.Pow(speed, 2) / 2) * engineDrag * Time.deltaTime;
-		speed -= dragforce;
+	void FixedUpdate () {
 
 		if (isEngineClutched) {
-			wheelSpeedDif = -wheelJoint.jointSpeed - speed;
-			Debug.Log (wheelSpeedDif);
-			if (wheelSpeedDif <= 0) {
-				speed -= Mathf.Pow (wheelSpeedDif, 2) * wheelDrag * Time.deltaTime;
+
+			speed = Mathf.SmoothDamp(speed, maxSpeed, ref smoothV, 0.1f);
+			torque = torqueCurve.Evaluate (-wheelJoint.jointSpeed / maxSpeed) * maxTorque * input;
+
+			wheelJoint.motor = SetMotorValues (torque, -speed);
+
+			//Engine brake effects
+			if (input == 0) {
+				wheelRb.angularDrag = wheelAngularDrag + (-wheelJoint.jointSpeed * engineBrakeForce) / maxSpeed;
 			} else {
-				speed += Mathf.Pow (wheelSpeedDif, 2) * wheelDrag * Time.deltaTime;
+				wheelRb.angularDrag = wheelAngularDrag;
 			}
+
+
+		} else {
+			//Engine running loose
+			float targetSpeed = maxSpeed * input;
+			speed = Mathf.SmoothDamp (speed, targetSpeed, ref smoothV, 0.1f);
+			torque = torqueCurve.Evaluate (speed / maxSpeed) * maxTorque;
+
+			wheelJoint.motor = SetMotorValues (0, 0);
 		}
-		float addforce = input * force * Time.deltaTime;
-		speed += addforce;
 
-
-
-		speed = Mathf.Clamp (speed, 0, maxSpeed);
-
-//		speed = maxSpeed * input;
-		torque = torqueCurve.Evaluate (speed / maxSpeed) * maxTorque;
-
-		JointMotor2D mt = wheelJoint.motor;
-		mt.motorSpeed = -speed;
-		mt.maxMotorTorque = torque;
-		wheelJoint.motor = mt;
 	}
 
 	public void SetInput (float value) {
 		input = value;
+	}
+
+	public void ToggleCluth () {
+		isEngineClutched = !isEngineClutched;
 	}
 
 	public float GetSpeed () {
@@ -67,5 +74,11 @@ public class Engine : MonoBehaviour {
 
 	public float GetTorque () {
 		return torque;
+	}
+
+	private JointMotor2D SetMotorValues (float motorTorque, float motorSpeed) {
+		mt.maxMotorTorque = motorTorque;
+		mt.motorSpeed = motorSpeed;
+		return mt;
 	}
 }
