@@ -3,59 +3,56 @@ using System.Collections;
 
 public class Engine : MonoBehaviour {
 
-	[Header("Settings")]
 	public float maxSpeed;
 	public float maxTorque;
 	public float engineBrakeForce;
 	public AnimationCurve torqueCurve;
 
-	[Header("Components")]
-	public WheelJoint2D wheelJoint;
-	public Rigidbody2D wheelRb;
-	public WheelGroundDetector groundDetector;
-
+	private Robot robot;
+	private float minSpeed;
 	private float input;
 	private float speed = 0;
 	private float torque;
-	private float engineBrakeTorque;
-	private float engineBrakeDrag;
 	private float wheelAngularDrag;
+	private JointMotor2D mt = new JointMotor2D();
 
 	private float smoothV = 0;
 
-	private JointMotor2D mt = new JointMotor2D();
 	public bool isEngineClutched = true;
 
 	// Use this for initialization
 	void Start () {
-		wheelAngularDrag = wheelRb.angularDrag;
+		wheelAngularDrag = robot.wheelRigidbody.angularDrag;
 	}
 	
 	// Update is called once per frame
 	void FixedUpdate () {
 
+		//When engine is clutched, current engine speed is driven by wheel speed
 		if (isEngineClutched) {
+			float wheelSpeed = Mathf.Abs (robot.wheelJoint.jointSpeed);
+			speed = Mathf.SmoothDamp(speed, wheelSpeed, ref smoothV, 0.05f);
+			speed = Mathf.Clamp (speed, minSpeed, maxSpeed);
+			torque = torqueCurve.Evaluate (speed / maxSpeed) * maxTorque * input;
 
-			speed = Mathf.SmoothDamp(speed, maxSpeed, ref smoothV, 0.1f);
-			torque = torqueCurve.Evaluate (-wheelJoint.jointSpeed / maxSpeed) * maxTorque * input;
-
-			wheelJoint.motor = SetMotorValues (torque, -speed);
-
-			//Engine brake effects
+			//Engine brake effects. Higher engine speeds increase engine resistence
 			if (input == 0) {
-				wheelRb.angularDrag = wheelAngularDrag + (-wheelJoint.jointSpeed * engineBrakeForce) / maxSpeed;
+				robot.wheelRigidbody.angularDrag = wheelAngularDrag + (speed * engineBrakeForce) / maxSpeed;
 			} else {
-				wheelRb.angularDrag = wheelAngularDrag;
+				robot.wheelRigidbody.angularDrag = wheelAngularDrag;
 			}
 
-
+			//Temporary code for direct wheel control
+			robot.wheelJoint.motor = SetMotorValues (torque, -maxSpeed);
+		
+		//When engine isn't clutched, engine speed is controlled by a fake inertia based on accelerator input
 		} else {
-			//Engine running loose
+			
 			float targetSpeed = maxSpeed * input;
 			speed = Mathf.SmoothDamp (speed, targetSpeed, ref smoothV, 0.1f);
 			torque = torqueCurve.Evaluate (speed / maxSpeed) * maxTorque;
 
-			wheelJoint.motor = SetMotorValues (0, 0);
+			robot.wheelJoint.motor = SetMotorValues (0, 0);
 		}
 
 	}
@@ -76,9 +73,24 @@ public class Engine : MonoBehaviour {
 		return torque;
 	}
 
+	public void LoadData (EngineData data) {
+		maxSpeed = data.maxSpeed;
+		minSpeed = data.minSpeed;
+		maxTorque = data.maxTorque;
+		engineBrakeForce = data.engineBrakeForce;
+		torqueCurve = data.torqueCurve;
+	}
+
+	public void SetRobotReference (Robot robotRef) {
+		robot = robotRef;
+	}
+
 	private JointMotor2D SetMotorValues (float motorTorque, float motorSpeed) {
 		mt.maxMotorTorque = motorTorque;
 		mt.motorSpeed = motorSpeed;
 		return mt;
 	}
+
+
+		
 }
