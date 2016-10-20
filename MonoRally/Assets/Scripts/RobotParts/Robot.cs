@@ -11,7 +11,7 @@ public class Robot : MonoBehaviour {
 	[HideInInspector]
 	public Engine engine;
 	// Use this for initialization
-	void Start () {
+	void Awake () {
 		engine = gameObject.AddComponent<Engine>() as Engine;
 		engine.LoadData (engineData);
 		engine.SetRobotReference (this);
