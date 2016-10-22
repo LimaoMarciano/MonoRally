@@ -14,7 +14,6 @@ public class Engine : MonoBehaviour {
 	private float speed = 0;
 	private float torque;
 	private float wheelAngularDrag;
-	private JointMotor2D mt = new JointMotor2D();
 
 	private float smoothV = 0;
 
