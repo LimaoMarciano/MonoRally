@@ -14,7 +14,6 @@ public class Engine : MonoBehaviour {
 	private float speed = 0;
 	private float torque;
 	private float wheelAngularDrag;
-	private JointMotor2D mt = new JointMotor2D();
 
 	private float smoothV = 0;
 
@@ -43,7 +42,9 @@ public class Engine : MonoBehaviour {
 			}
 
 			//Temporary code for direct wheel control
-			robot.wheelJoint.motor = SetMotorValues (torque, -maxSpeed);
+//			robot.wheelJoint.SetMotorValues (torque, -maxSpeed);
+
+			robot.wheel.ApplyMotorForce (maxSpeed, torque);
 		
 		//When engine isn't clutched, engine speed is controlled by a fake inertia based on accelerator input
 		} else {
@@ -52,13 +53,13 @@ public class Engine : MonoBehaviour {
 			speed = Mathf.SmoothDamp (speed, targetSpeed, ref smoothV, 0.1f);
 			torque = torqueCurve.Evaluate (speed / maxSpeed) * maxTorque;
 
-			robot.wheelJoint.motor = SetMotorValues (0, 0);
+			robot.wheelJoint.SetMotorValues (0, 0);
 		}
 
 	}
 
 	public void SetInput (float value) {
-		input = value;
+		input = Mathf.Abs (value);
 	}
 
 	public void ToggleCluth () {
@@ -85,11 +86,11 @@ public class Engine : MonoBehaviour {
 		robot = robotRef;
 	}
 
-	private JointMotor2D SetMotorValues (float motorTorque, float motorSpeed) {
-		mt.maxMotorTorque = motorTorque;
-		mt.motorSpeed = motorSpeed;
-		return mt;
-	}
+//	private JointMotor2D SetMotorValues (float motorTorque, float motorSpeed) {
+//		mt.maxMotorTorque = motorTorque;
+//		mt.motorSpeed = motorSpeed;
+//		return mt;
+//	}
 
 
 		
