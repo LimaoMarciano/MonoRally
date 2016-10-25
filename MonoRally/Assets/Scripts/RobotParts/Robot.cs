@@ -5,8 +5,11 @@ public class Robot : MonoBehaviour {
 
 	public Vector3 wheelPosition;
 
+	[Header("Configuration data")]
 	public EngineData engineData;
 	public WheelData wheelData;
+	public SuspensionData suspensionData;
+
 	public WheelJoint2D wheelJoint;
 	public Rigidbody2D wheelRigidbody;
 	public WheelGroundDetector wheelGroundDetector;
@@ -14,6 +17,7 @@ public class Robot : MonoBehaviour {
 
 	[HideInInspector] public Engine engine;
 	[HideInInspector] public Wheel wheel;
+	[HideInInspector] public Suspension suspention;
 
 	// Use this for initialization
 	void Awake () {
@@ -32,7 +36,8 @@ public class Robot : MonoBehaviour {
 		wheelJoint.anchor = new Vector2 (0, -0.75f);
 		wheelJoint.connectedBody = wheel.GetComponent<Rigidbody2D> ();
 
-
+		suspention = gameObject.AddComponent<Suspension> ();
+		suspention.LoadData (suspensionData);
 	}
 	
 	// Update is called once per frame
