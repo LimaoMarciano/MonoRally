@@ -37,7 +37,7 @@ public class Wheel : MonoBehaviour {
 		gameObject.AddComponent<SpriteRenderer> ();
 		SpriteRenderer sprite = GetComponent<SpriteRenderer> ();
 		sprite.sprite = data.sprite;
-		sprite.sortingOrder = 1;
+		sprite.sortingOrder = 2;
 
 		gameObject.AddComponent<CircleCollider2D> ();
 		CircleCollider2D collider = GetComponent<CircleCollider2D> ();
@@ -53,6 +53,8 @@ public class Wheel : MonoBehaviour {
 		rigidbody2D.drag = data.drag;
 		rigidbody2D.angularDrag = data.angularDrag;
 		rigidbody2D.collisionDetectionMode = CollisionDetectionMode2D.Continuous;
+
+		Debug.Log ("Wheel data loaded");
 
 	}
 }
