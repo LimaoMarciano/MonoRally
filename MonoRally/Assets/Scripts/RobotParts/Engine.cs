@@ -80,6 +80,8 @@ public class Engine : MonoBehaviour {
 		maxTorque = data.maxTorque;
 		engineBrakeForce = data.engineBrakeForce;
 		torqueCurve = data.torqueCurve;
+
+		Debug.Log ("Engine data loaded.");
 	}
 
 	public void SetRobotReference (Robot robotRef) {
