@@ -7,10 +7,12 @@ public class Robot : MonoBehaviour {
 
 	[Header("Configuration data")]
 	public EngineData engineData;
+	public BodyData bodyData;
 	public WheelData wheelData;
 	public SuspensionData suspensionData;
 
-	public GameObject body;
+//	public GameObject body;
+	public Body body;
 	public WheelJoint2D wheelJoint;
 	public Rigidbody2D wheelRigidbody;
 	public WheelGroundDetector wheelGroundDetector;
@@ -24,6 +26,14 @@ public class Robot : MonoBehaviour {
 	void Awake () {
 		Debug.Log ("Robot initializing...");
 
+		Debug.Log ("Creating body...");
+		GameObject bodyObject = new GameObject ("Body");
+		bodyObject.transform.SetParent (transform);
+		body = bodyObject.AddComponent<Body> ();
+		body.LoadData (bodyData);
+
+		wheelJoint = bodyObject.AddComponent<WheelJoint2D> ();
+
 		Debug.Log ("Creating engine...");
 		engine = gameObject.AddComponent<Engine>() as Engine;
 		engine.LoadData (engineData);
@@ -31,15 +41,16 @@ public class Robot : MonoBehaviour {
 
 		Debug.Log ("Creating wheel...");
 		GameObject wheelObject = new GameObject ("Wheel");
-		wheelObject.transform.SetParent (wheelJoint.gameObject.transform);
-		wheelObject.transform.localPosition = wheelPosition;
+		wheelObject.transform.SetParent (bodyObject.transform);
+		wheelObject.transform.localPosition = bodyData.wheelPosition;
 		wheelObject.AddComponent<Wheel> ();
 		wheel = wheelObject.GetComponent<Wheel> ();
 		wheel.LoadData (wheelData);
 
 		Debug.Log ("Creating wheel joint...");
 		wheelRigidbody = wheelObject.GetComponent<Rigidbody2D> ();
-		wheelJoint.anchor = new Vector2 (0, -0.75f);
+		wheelJoint = bodyObject.AddComponent<WheelJoint2D> ();
+		wheelJoint.anchor = bodyData.wheelPosition;
 		wheelJoint.connectedBody = wheel.GetComponent<Rigidbody2D> ();
 		Debug.Log ("Wheel joint created and configured");
 

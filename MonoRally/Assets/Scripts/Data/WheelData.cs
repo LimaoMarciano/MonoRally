@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-[CreateAssetMenu(fileName = "WheelData", menuName = "RobotRally/Wheel", order = 2)]
+[CreateAssetMenu(fileName = "WheelData", menuName = "RobotRally/Wheel", order = 3)]
 public class WheelData : ScriptableObject {
 
 	public string model;
