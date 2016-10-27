@@ -3,8 +3,6 @@ using System.Collections;
 
 public class Robot : MonoBehaviour {
 
-	public Vector3 wheelPosition;
-
 	[Header("Configuration data")]
 	public EngineData engineData;
 	public BodyData bodyData;
@@ -29,10 +27,11 @@ public class Robot : MonoBehaviour {
 		Debug.Log ("Creating body...");
 		GameObject bodyObject = new GameObject ("Body");
 		bodyObject.transform.SetParent (transform);
+		bodyObject.transform.localPosition = Vector3.zero;
 		body = bodyObject.AddComponent<Body> ();
 		body.LoadData (bodyData);
 
-		wheelJoint = bodyObject.AddComponent<WheelJoint2D> ();
+		Camera.main.GetComponent<CameraFollow> ().target = bodyObject.transform;
 
 		Debug.Log ("Creating engine...");
 		engine = gameObject.AddComponent<Engine>() as Engine;
@@ -46,12 +45,13 @@ public class Robot : MonoBehaviour {
 		wheelObject.AddComponent<Wheel> ();
 		wheel = wheelObject.GetComponent<Wheel> ();
 		wheel.LoadData (wheelData);
+		wheelRigidbody = wheelObject.GetComponent<Rigidbody2D> ();
 
 		Debug.Log ("Creating wheel joint...");
-		wheelRigidbody = wheelObject.GetComponent<Rigidbody2D> ();
 		wheelJoint = bodyObject.AddComponent<WheelJoint2D> ();
 		wheelJoint.anchor = bodyData.wheelPosition;
-		wheelJoint.connectedBody = wheel.GetComponent<Rigidbody2D> ();
+		wheelJoint.connectedBody = wheelRigidbody;
+		wheelJoint.enableCollision = true;
 		Debug.Log ("Wheel joint created and configured");
 
 		Debug.Log ("Creating suspension...");
