@@ -16,19 +16,6 @@ public class Body : MonoBehaviour {
 	void Start () {
 		rb = GetComponent<Rigidbody2D> ();
 	}
-	
-	// Update is called once per frame
-	void FixedUpdate () {
-		Vector3 bodyAngle = transform.up;
-		float angle = SignedAngle (bodyAngle, Vector3.up);
-//		Debug.Log (angle);
-//
-//		rb.AddTorque (angle * 40,ForceMode2D.Force);
-		if (angle < 100 && angle > -100) {
-			Stabilizer (0);
-		}
-
-	}
 
 	public void LoadData (BodyData data) {
 		robot = GetComponentInParent<Robot> ();
@@ -56,26 +43,5 @@ public class Body : MonoBehaviour {
 		Debug.Log ("Body data loaded.");
 
 	}
-
-	private float SignedAngle (Vector3 a, Vector3 b) {
-		float sign = Mathf.Sign(Vector3.Cross(b, a).z);
-		return Vector3.Angle (a, b) * sign;
-	}
-
-	private void Stabilizer (float targetAngle) {
-		Vector3 bodyAngle = transform.up;
-		float angle = SignedAngle (bodyAngle, Vector3.up);
-
-		float dist = targetAngle - angle;
-		Debug.Log ("Distance: " + dist);
-		// calc a target vel proportional to distance (clamped to maxVel)
-		float targetAngularSpeed = Mathf.Clamp (toAngularSpeed * dist, -maxAngularSpeed, maxAngularSpeed);
-		// calculate the velocity error
-		float error = targetAngularSpeed - rb.angularVelocity;
-		// calc a force proportional to the error (clamped to maxForce)
-		float torque = Mathf.Clamp(gain * error, -maxTorque, maxTorque);
-		Debug.Log ("Torque: " + torque);
-		Debug.Log ("--------------------");
-		rb.AddTorque(torque, ForceMode2D.Force);
-	}
+		
 }

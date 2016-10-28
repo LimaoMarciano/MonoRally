@@ -8,20 +8,26 @@ public class Robot : MonoBehaviour {
 	public BodyData bodyData;
 	public WheelData wheelData;
 	public SuspensionData suspensionData;
+	public StabilizerData stabilizerData;
 
 //	public GameObject body;
-	public Body body;
-	public WheelJoint2D wheelJoint;
-	public Rigidbody2D wheelRigidbody;
-	public WheelGroundDetector wheelGroundDetector;
+	[HideInInspector] public Body body;
+	[HideInInspector] public WheelJoint2D wheelJoint;
+	[HideInInspector] public Rigidbody2D wheelRigidbody;
+	[HideInInspector] public WheelGroundDetector wheelGroundDetector;
 
 
 	[HideInInspector] public Engine engine;
 	[HideInInspector] public Wheel wheel;
 	[HideInInspector] public Suspension suspention;
+	[HideInInspector] public Stabilizer stabilizer;
 
 	// Use this for initialization
 	void Awake () {
+		InitializeRobot ();
+	}
+	
+	public void InitializeRobot () {
 		Debug.Log ("Robot initializing...");
 
 		Debug.Log ("Creating body...");
@@ -31,7 +37,9 @@ public class Robot : MonoBehaviour {
 		body = bodyObject.AddComponent<Body> ();
 		body.LoadData (bodyData);
 
-		Camera.main.GetComponent<CameraFollow> ().target = bodyObject.transform;
+		Debug.Log ("Creating stabilizer...");
+		stabilizer = bodyObject.AddComponent<Stabilizer> ();
+		stabilizer.LoadData (stabilizerData);
 
 		Debug.Log ("Creating engine...");
 		engine = gameObject.AddComponent<Engine>() as Engine;
@@ -61,11 +69,8 @@ public class Robot : MonoBehaviour {
 		suspention = suspension.AddComponent<Suspension> ();
 		suspention.LoadData (suspensionData);
 
+		Camera.main.GetComponent<CameraFollow> ().target = bodyObject.transform;
+
 		Debug.Log ("Robot initialized");
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
 	}
 }
