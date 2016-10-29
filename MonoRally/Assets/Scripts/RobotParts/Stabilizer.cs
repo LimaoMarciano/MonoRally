@@ -9,8 +9,12 @@ public class Stabilizer : MonoBehaviour {
 	private float maxTorque = 2000.0f;
 	private float gain = 5f;
 
+	private Robot robot;
 	private Rigidbody2D rb;
 	private float bodyAngle;
+	private Vector2 targetDirection = Vector2.up;
+
+	private float airTimer = 0;
 
 	// Use this for initialization
 	void Start () {
@@ -20,14 +24,34 @@ public class Stabilizer : MonoBehaviour {
 	// Update is called once per frame
 	void FixedUpdate () {
 		Vector3 bodyDirection = transform.up;
-		bodyAngle = SignedAngle (bodyDirection, Vector3.up);
+		Vector2 groundNormal =  robot.wheel.groundNormal;
+
+		//If the robot is grounded, use the ground normal
+		if (robot.wheel.isGrounded) {
+			targetDirection = groundNormal;
+		} else {
+			//If the robot is airborne, hold the last normal for 0.5 seconds. If the timer runs out, make the normal point up
+			if (airTimer > 0.5f) {
+				targetDirection = Vector3.up;
+				airTimer = 0;
+			} else {
+				airTimer += Time.fixedDeltaTime;
+			}
+		}
+
+		bodyAngle = SignedAngle (bodyDirection, targetDirection);
 
 		if (Mathf.Abs(bodyAngle) < angleLimit) {
 			StabilizeBody (0);
 		}
 	}
 
+	void LateUpdate () {
+		Debug.DrawLine (transform.position, transform.position + (Vector3)targetDirection.normalized, Color.red);
+	}
+
 	public void LoadData (StabilizerData data) {
+		robot = GetComponentInParent<Robot> ();
 		rb = GetComponent<Rigidbody2D> ();
 		angleLimit = data.angleLimit;
 		toAngularSpeed = data.toAngularSpeed;
