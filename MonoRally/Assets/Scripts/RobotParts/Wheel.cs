@@ -66,6 +66,8 @@ public class Wheel : MonoBehaviour {
 	}
 
 	void OnCollisionStay2D (Collision2D col) {
+		isGrounded = true;
+
 		if (col.gameObject.layer == LayerMask.NameToLayer("Road")) {
 			groundNormal = col.contacts [0].normal;
 		}

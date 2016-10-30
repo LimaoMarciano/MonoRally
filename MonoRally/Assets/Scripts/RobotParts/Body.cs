@@ -6,12 +6,6 @@ public class Body : MonoBehaviour {
 	private Robot robot;
 	private Rigidbody2D rb;
 
-	//Stabilizer stuff
-	public float toAngularSpeed = 10f;
-	public float maxAngularSpeed = 200f;
-	public float maxTorque = 2000.0f;
-	public float gain = 5f;
-
 	// Use this for initialization
 	void Start () {
 		rb = GetComponent<Rigidbody2D> ();

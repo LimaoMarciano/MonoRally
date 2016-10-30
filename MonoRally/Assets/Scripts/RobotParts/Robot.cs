@@ -9,6 +9,7 @@ public class Robot : MonoBehaviour {
 	public WheelData wheelData;
 	public SuspensionData suspensionData;
 	public StabilizerData stabilizerData;
+	public JumpMechanismData jumpMechanismData;
 
 //	public GameObject body;
 	[HideInInspector] public Body body;
@@ -21,6 +22,7 @@ public class Robot : MonoBehaviour {
 	[HideInInspector] public Wheel wheel;
 	[HideInInspector] public Suspension suspention;
 	[HideInInspector] public Stabilizer stabilizer;
+	[HideInInspector] public JumpMechanism jumpMechanism;
 
 	// Use this for initialization
 	void Awake () {
@@ -61,6 +63,10 @@ public class Robot : MonoBehaviour {
 		wheelJoint.connectedBody = wheelRigidbody;
 		wheelJoint.enableCollision = true;
 		Debug.Log ("Wheel joint created and configured");
+
+		Debug.Log ("Creating jump mechanism...");
+		jumpMechanism = bodyObject.gameObject.AddComponent<JumpMechanism> ();
+		jumpMechanism.LoadData (jumpMechanismData);
 
 		Debug.Log ("Creating suspension...");
 		GameObject suspension = new GameObject ("Suspension");
