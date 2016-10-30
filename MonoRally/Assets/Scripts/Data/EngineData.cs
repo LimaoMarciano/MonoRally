@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-[CreateAssetMenu(fileName = "EngineData", menuName = "RobotRally/Engine", order = 1)]
+[CreateAssetMenu(fileName = "EngineData", menuName = "RobotRally/Engine", order = 2)]
 public class EngineData : ScriptableObject {
 
 	public string manufacturer;

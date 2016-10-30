@@ -7,6 +7,9 @@ public class Wheel : MonoBehaviour {
 	private int facing = -1;
 	private PhysicsMaterial2D physicsMaterial;
 
+	public bool isGrounded = false;
+	public Vector2 groundNormal = new Vector2(0, 1);
+
 	// Use this for initialization
 	void Awake () {
 		
@@ -57,4 +60,19 @@ public class Wheel : MonoBehaviour {
 		Debug.Log ("Wheel data loaded");
 
 	}
+
+	void OnCollisionEnter2D () {
+		isGrounded = true;
+	}
+
+	void OnCollisionStay2D (Collision2D col) {
+		if (col.gameObject.layer == LayerMask.NameToLayer("Road")) {
+			groundNormal = col.contacts [0].normal;
+		}
+	}
+
+	void OnCollisionExit2D () {
+		isGrounded = false;
+	}
+
 }
