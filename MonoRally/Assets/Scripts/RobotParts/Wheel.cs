@@ -6,22 +6,51 @@ public class Wheel : MonoBehaviour {
 	private Robot robot;
 	private int facing = -1;
 	private PhysicsMaterial2D physicsMaterial;
+	private Rigidbody2D rb;
+
+	private float wheelAngularDrag;
+	private float engineDrag;
+	private float brakeDrag;
+
+	private float motorSpeed;
+	private float motorTorque;
+
+	private float brakeTorque;
+	private float brakeProportion;
 
 	public bool isGrounded = false;
 	public Vector2 groundNormal = new Vector2(0, 1);
 
 	// Use this for initialization
-	void Awake () {
-		
-	}
-	
-	// Update is called once per frame
-//	void Update () {
-//	
+//	void Awake () {
+//		
 //	}
+	
+
+	void FixedUpdate () {
+		rb.angularDrag = wheelAngularDrag + engineDrag + brakeDrag;
+
+//		float spd = (1 - brakeProportion) * motorSpeed;
+		float spd = motorSpeed;
+		float trq = motorTorque - brakeTorque;
+
+		if (trq < 0) {
+			spd = 0;
+			trq *= -1;
+		}
+
+		robot.wheelJoint.SetMotorValues (spd * facing, trq);
+	}
 
 	public void ApplyMotorForce (float speed, float torque) {
-		robot.wheelJoint.SetMotorValues (speed * facing, torque);
+//		robot.wheelJoint.SetMotorValues (speed * facing, torque);
+		motorSpeed = speed;
+		motorTorque = torque;
+	}
+
+	public void ApplyBrakeForce (float torque, float input) {
+		brakeTorque = torque;
+		brakeProportion = input;
 	}
 
 	public void SetFacing (float direction) {
@@ -32,6 +61,14 @@ public class Wheel : MonoBehaviour {
 		if (direction < 0) {
 			facing = 1;
 		}
+	}
+
+	public void ApplyEngineDrag (float drag) {
+		engineDrag = drag;
+	}
+
+	public void ApplyBrakeDrag (float drag) {
+		brakeDrag = drag;
 	}
 
 	public void LoadData (WheelData data) {
@@ -51,11 +88,13 @@ public class Wheel : MonoBehaviour {
 		collider.sharedMaterial = physicsMaterial;
 
 		gameObject.AddComponent<Rigidbody2D> ();
-		Rigidbody2D rigidbody2D = GetComponent<Rigidbody2D> ();
-		rigidbody2D.mass = data.mass;
-		rigidbody2D.drag = data.drag;
-		rigidbody2D.angularDrag = data.angularDrag;
-		rigidbody2D.collisionDetectionMode = CollisionDetectionMode2D.Continuous;
+		rb = GetComponent<Rigidbody2D> ();
+		rb.mass = data.mass;
+		rb.drag = data.drag;
+		rb.angularDrag = data.angularDrag;
+		rb.collisionDetectionMode = CollisionDetectionMode2D.Continuous;
+
+		wheelAngularDrag = data.angularDrag;
 
 		Debug.Log ("Wheel data loaded");
 
