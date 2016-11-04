@@ -10,13 +10,11 @@ public class Wheel : MonoBehaviour {
 
 	private float wheelAngularDrag;
 	private float engineDrag;
-	private float brakeDrag;
 
 	private float motorSpeed;
 	private float motorTorque;
 
 	private float brakeTorque;
-	private float brakeProportion;
 
 	public bool isGrounded = false;
 	public Vector2 groundNormal = new Vector2(0, 1);
@@ -28,18 +26,19 @@ public class Wheel : MonoBehaviour {
 	
 
 	void FixedUpdate () {
-		rb.angularDrag = wheelAngularDrag + engineDrag + brakeDrag;
+		rb.angularDrag = wheelAngularDrag + engineDrag;
 
-//		float spd = (1 - brakeProportion) * motorSpeed;
-		float spd = motorSpeed;
-		float trq = motorTorque - brakeTorque;
+		float speed;
+		float torque = motorTorque - brakeTorque;
 
-		if (trq < 0) {
-			spd = 0;
-			trq *= -1;
+		if (torque < 0) {
+			speed = 0;
+			torque *= -1;
+		} else {
+			speed = motorSpeed;
 		}
 
-		robot.wheelJoint.SetMotorValues (spd * facing, trq);
+		robot.wheelJoint.SetMotorValues (speed * facing, torque);
 	}
 
 	public void ApplyMotorForce (float speed, float torque) {
@@ -48,9 +47,8 @@ public class Wheel : MonoBehaviour {
 		motorTorque = torque;
 	}
 
-	public void ApplyBrakeForce (float torque, float input) {
+	public void ApplyBrakeForce (float torque) {
 		brakeTorque = torque;
-		brakeProportion = input;
 	}
 
 	public void SetFacing (float direction) {
@@ -65,10 +63,6 @@ public class Wheel : MonoBehaviour {
 
 	public void ApplyEngineDrag (float drag) {
 		engineDrag = drag;
-	}
-
-	public void ApplyBrakeDrag (float drag) {
-		brakeDrag = drag;
 	}
 
 	public void LoadData (WheelData data) {

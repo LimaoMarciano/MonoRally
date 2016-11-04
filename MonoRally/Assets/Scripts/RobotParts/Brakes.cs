@@ -3,10 +3,10 @@ using System.Collections;
 
 public class Brakes : MonoBehaviour {
 
-	public float brakeDrag = 400f;
+	public float brakeTorque = 0f;
 
 	private Robot robot;
-	private float input;
+	private float input = 0;
 
 	// Use this for initialization
 	void Start () {
@@ -15,11 +15,18 @@ public class Brakes : MonoBehaviour {
 	
 	// Update is called once per frame
 	void FixedUpdate () {
-		robot.wheel.ApplyBrakeForce (brakeDrag * input, input);
+		
+		robot.wheel.ApplyBrakeForce (brakeTorque * input);
 	}
 
 	public void SetInput (float value) {
 		input = value;
+	}
+
+	public void LoadData (BrakeData data) {
+		brakeTorque = data.brakeTorque;
+
+		Debug.Log ("Brake data loaded.");
 	}
 
 }

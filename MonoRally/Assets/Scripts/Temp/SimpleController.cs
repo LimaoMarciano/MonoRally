@@ -18,7 +18,6 @@ public class SimpleController : MonoBehaviour {
 
 		float brakeInput = Input.GetAxis ("Brake");
 		robot.brakes.SetInput (brakeInput);
-		Debug.Log (brakeInput);
 
 		robot.jumpMechanism.JumpInput (Input.GetButton ("Jump"));
 
