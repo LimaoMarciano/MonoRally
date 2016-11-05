@@ -61,7 +61,7 @@ public class Transmission : MonoBehaviour {
 		if (currentGear > 0) {
 			return gears [currentGear - 1];
 		} else {
-			return 0;
+			return 1;
 		}
 	}
 }

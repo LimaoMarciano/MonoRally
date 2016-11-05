@@ -94,6 +94,10 @@ public class Wheel : MonoBehaviour {
 
 	}
 
+	public float GetCurrentSpeed () {
+		return rb.velocity.magnitude;
+	}
+
 	void OnCollisionEnter2D () {
 		isGrounded = true;
 	}

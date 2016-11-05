@@ -38,7 +38,8 @@ public class Engine : MonoBehaviour {
 
 			//Engine brake effects. Higher engine speeds increase engine resistence
 			if (input == 0) {
-				robot.wheel.ApplyEngineDrag ((speed * engineBrakeForce) / maxSpeed);
+				float brakeForce = (speed * engineBrakeForce) / maxSpeed;
+				robot.wheel.ApplyEngineDrag (brakeForce * gearRatio);
 			}
 
 			//Temporary code for direct wheel control
@@ -54,6 +55,7 @@ public class Engine : MonoBehaviour {
 			torque = torqueCurve.Evaluate (speed / maxSpeed) * maxTorque;
 
 			robot.wheelJoint.SetMotorValues (0, 0);
+			robot.wheel.ApplyEngineDrag (0);
 		}
 
 	}
