@@ -9,6 +9,8 @@ public class EngineDebugUI : MonoBehaviour {
 	public Fillbar speed;
 	public Fillbar wheelSpeed;
 	public Fillbar torque;
+	public Text gear;
+	public Text speedometer;
 
 	// Use this for initialization
 	void Start () {
@@ -23,7 +25,15 @@ public class EngineDebugUI : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		speed.value = robot.engine.GetSpeed ();
-		torque.value = robot.engine.GetTorque ();
+
+		torque.SetMaxValue (robot.engine.maxTorque * robot.transmission.GetCurrentGearRatio ());
+		torque.value = robot.engine.GetTorque () * robot.transmission.GetCurrentGearRatio ();
+
+		wheelSpeed.SetMaxValue (robot.engine.maxSpeed / robot.transmission.GetCurrentGearRatio ());
 		wheelSpeed.value = Mathf.Abs(robot.wheelJoint.jointSpeed);
+
+		gear.text = robot.transmission.GetCurrentGear ().ToString ();
+		float speedKmH = robot.wheel.GetCurrentSpeed () * 3.6f;
+		speedometer.text = speedKmH.ToString("F0");
 	}
 }

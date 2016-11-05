@@ -5,6 +5,7 @@ public class Robot : MonoBehaviour {
 
 	[Header("Configuration data")]
 	public EngineData engineData;
+	public TransmissionData transmissionData;
 	public BodyData bodyData;
 	public WheelData wheelData;
 	public SuspensionData suspensionData;
@@ -20,6 +21,7 @@ public class Robot : MonoBehaviour {
 
 
 	[HideInInspector] public Engine engine;
+	[HideInInspector] public Transmission transmission;
 	[HideInInspector] public Brakes brakes;
 	[HideInInspector] public Wheel wheel;
 	[HideInInspector] public Suspension suspention;
@@ -49,6 +51,10 @@ public class Robot : MonoBehaviour {
 		engine = gameObject.AddComponent<Engine>() as Engine;
 		engine.LoadData (engineData);
 		engine.SetRobotReference (this);
+
+		Debug.Log ("Creating transmission...");
+		transmission = body.gameObject.AddComponent<Transmission> ();
+		transmission.LoadData (transmissionData);
 
 		Debug.Log ("Creating wheel...");
 		GameObject wheelObject = new GameObject ("Wheel");

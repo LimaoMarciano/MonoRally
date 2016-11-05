@@ -30,19 +30,24 @@ public class Engine : MonoBehaviour {
 		//When engine is clutched, current engine speed is driven by wheel speed
 		if (isEngineClutched) {
 			float wheelSpeed = Mathf.Abs (robot.wheelJoint.jointSpeed);
-			speed = Mathf.SmoothDamp(speed, wheelSpeed, ref smoothV, 0.05f);
+			float gearRatio = robot.transmission.GetCurrentGearRatio ();
+
+			speed = Mathf.SmoothDamp(speed, wheelSpeed * gearRatio, ref smoothV, 0.05f);
 			speed = Mathf.Clamp (speed, minSpeed, maxSpeed);
 			torque = torqueCurve.Evaluate (speed / maxSpeed) * maxTorque * input;
 
 			//Engine brake effects. Higher engine speeds increase engine resistence
 			if (input == 0) {
-				robot.wheel.ApplyEngineDrag ((speed * engineBrakeForce) / maxSpeed);
+				float brakeForce = (speed * engineBrakeForce) / maxSpeed;
+				robot.wheel.ApplyEngineDrag (brakeForce * gearRatio);
+			} else {
+				robot.wheel.ApplyEngineDrag (0);
 			}
 
 			//Temporary code for direct wheel control
 //			robot.wheelJoint.SetMotorValues (torque, -maxSpeed);
 
-			robot.wheel.ApplyMotorForce (maxSpeed, torque);
+			robot.transmission.ApplyMotorForce (maxSpeed, torque);
 		
 		//When engine isn't clutched, engine speed is controlled by a fake inertia based on accelerator input
 		} else {
@@ -52,6 +57,7 @@ public class Engine : MonoBehaviour {
 			torque = torqueCurve.Evaluate (speed / maxSpeed) * maxTorque;
 
 			robot.wheelJoint.SetMotorValues (0, 0);
+			robot.wheel.ApplyEngineDrag (0);
 		}
 
 	}
