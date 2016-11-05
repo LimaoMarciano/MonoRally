@@ -40,6 +40,8 @@ public class Engine : MonoBehaviour {
 			if (input == 0) {
 				float brakeForce = (speed * engineBrakeForce) / maxSpeed;
 				robot.wheel.ApplyEngineDrag (brakeForce * gearRatio);
+			} else {
+				robot.wheel.ApplyEngineDrag (0);
 			}
 
 			//Temporary code for direct wheel control
