@@ -11,27 +11,21 @@ public class Brakes : MonoBehaviour {
 	private SpriteRenderer caliperSprite;
 	private GameObject caliperContainer;
 	private GameObject caliperObject;
-	private Vector3 caliperOffset = new Vector3 (0.15f, 0, 0);
-	private Vector3 caliperRotation = new Vector3 (0, 0, 0);
-	private Vector3 caliperTravel = new Vector3 (0.05f, 0, 0);
-
-	// Use this for initialization
-	void Start () {
-		
-	}
+	private Vector3 caliperOffset;
+	private Vector3 caliperRotation;
+	private Vector3 caliperTravel;
 
 	void Update () {
-		caliperContainer.transform.position = robot.wheel.gameObject.transform.position;
-
-
-		caliperObject.transform.localPosition = caliperOffset - (caliperTravel * input);
+		UpdateCaliperPosition ();
 	}
-
-	// Update is called once per frame
+		
 	void FixedUpdate () {
 		robot.wheel.ApplyBrakeForce (brakeTorque * input);
 	}
 
+	//Public Methods
+	//***********************************************************************************
+	//
 	public void SetInput (float value) {
 		input = value;
 	}
@@ -39,7 +33,11 @@ public class Brakes : MonoBehaviour {
 	public void LoadData (BrakeData data) {
 		robot = GetComponentInParent<Robot> ();
 
+		caliperOffset = new Vector3 (data.caliperOffset, 0, 0);
+		caliperRotation = new Vector3 (0, 0, data.caliperRotation);
+		caliperTravel = new Vector3 (data.caliperTravel, 0, 0);
 		brakeTorque = data.brakeTorque;
+
 		discSprite = gameObject.AddComponent<SpriteRenderer>();
 		discSprite.sprite = data.disc;
 		discSprite.sortingOrder = 4;
@@ -58,8 +56,15 @@ public class Brakes : MonoBehaviour {
 		caliperSprite.sprite = data.caliper;
 		caliperSprite.sortingOrder = 5;
 
-
 		Debug.Log ("Brake data loaded.");
+	}
+
+	//Private methods
+	//**********************************************************************************
+	//
+	private void UpdateCaliperPosition () {
+		caliperContainer.transform.position = robot.wheel.gameObject.transform.position;
+		caliperObject.transform.localPosition = caliperOffset - (caliperTravel * input);
 	}
 
 }
