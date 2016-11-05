@@ -6,22 +6,49 @@ public class Wheel : MonoBehaviour {
 	private Robot robot;
 	private int facing = -1;
 	private PhysicsMaterial2D physicsMaterial;
+	private Rigidbody2D rb;
+
+	private float wheelAngularDrag;
+	private float engineDrag;
+
+	private float motorSpeed;
+	private float motorTorque;
+
+	private float brakeTorque;
 
 	public bool isGrounded = false;
 	public Vector2 groundNormal = new Vector2(0, 1);
 
 	// Use this for initialization
-	void Awake () {
-		
-	}
-	
-	// Update is called once per frame
-//	void Update () {
-//	
+//	void Awake () {
+//		
 //	}
+	
+
+	void FixedUpdate () {
+		rb.angularDrag = wheelAngularDrag + engineDrag;
+
+		float speed;
+		float torque = motorTorque - brakeTorque;
+
+		if (torque < 0) {
+			speed = 0;
+			torque *= -1;
+		} else {
+			speed = motorSpeed;
+		}
+
+		robot.wheelJoint.SetMotorValues (speed * facing, torque);
+	}
 
 	public void ApplyMotorForce (float speed, float torque) {
-		robot.wheelJoint.SetMotorValues (speed * facing, torque);
+//		robot.wheelJoint.SetMotorValues (speed * facing, torque);
+		motorSpeed = speed;
+		motorTorque = torque;
+	}
+
+	public void ApplyBrakeForce (float torque) {
+		brakeTorque = torque;
 	}
 
 	public void SetFacing (float direction) {
@@ -32,6 +59,10 @@ public class Wheel : MonoBehaviour {
 		if (direction < 0) {
 			facing = 1;
 		}
+	}
+
+	public void ApplyEngineDrag (float drag) {
+		engineDrag = drag;
 	}
 
 	public void LoadData (WheelData data) {
@@ -51,11 +82,13 @@ public class Wheel : MonoBehaviour {
 		collider.sharedMaterial = physicsMaterial;
 
 		gameObject.AddComponent<Rigidbody2D> ();
-		Rigidbody2D rigidbody2D = GetComponent<Rigidbody2D> ();
-		rigidbody2D.mass = data.mass;
-		rigidbody2D.drag = data.drag;
-		rigidbody2D.angularDrag = data.angularDrag;
-		rigidbody2D.collisionDetectionMode = CollisionDetectionMode2D.Continuous;
+		rb = GetComponent<Rigidbody2D> ();
+		rb.mass = data.mass;
+		rb.drag = data.drag;
+		rb.angularDrag = data.angularDrag;
+		rb.collisionDetectionMode = CollisionDetectionMode2D.Continuous;
+
+		wheelAngularDrag = data.angularDrag;
 
 		Debug.Log ("Wheel data loaded");
 

@@ -10,6 +10,7 @@ public class Robot : MonoBehaviour {
 	public SuspensionData suspensionData;
 	public StabilizerData stabilizerData;
 	public JumpMechanismData jumpMechanismData;
+	public BrakeData brakeData;
 
 //	public GameObject body;
 	[HideInInspector] public Body body;
@@ -19,6 +20,7 @@ public class Robot : MonoBehaviour {
 
 
 	[HideInInspector] public Engine engine;
+	[HideInInspector] public Brakes brakes;
 	[HideInInspector] public Wheel wheel;
 	[HideInInspector] public Suspension suspention;
 	[HideInInspector] public Stabilizer stabilizer;
@@ -56,6 +58,13 @@ public class Robot : MonoBehaviour {
 		wheel = wheelObject.GetComponent<Wheel> ();
 		wheel.LoadData (wheelData);
 		wheelRigidbody = wheelObject.GetComponent<Rigidbody2D> ();
+
+		Debug.Log ("Creating brake...");
+		GameObject brakeObject = new GameObject ("Brake");
+		brakeObject.transform.SetParent (wheelObject.transform);
+		brakeObject.transform.localPosition = Vector3.zero;
+		brakes = brakeObject.AddComponent<Brakes> ();
+		brakes.LoadData (brakeData);
 
 		Debug.Log ("Creating wheel joint...");
 		wheelJoint = bodyObject.AddComponent<WheelJoint2D> ();

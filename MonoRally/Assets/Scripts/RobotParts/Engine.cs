@@ -36,9 +36,7 @@ public class Engine : MonoBehaviour {
 
 			//Engine brake effects. Higher engine speeds increase engine resistence
 			if (input == 0) {
-				robot.wheelRigidbody.angularDrag = wheelAngularDrag + (speed * engineBrakeForce) / maxSpeed;
-			} else {
-				robot.wheelRigidbody.angularDrag = wheelAngularDrag;
+				robot.wheel.ApplyEngineDrag ((speed * engineBrakeForce) / maxSpeed);
 			}
 
 			//Temporary code for direct wheel control
