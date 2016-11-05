@@ -21,5 +21,13 @@ public class SimpleController : MonoBehaviour {
 
 		robot.jumpMechanism.JumpInput (Input.GetButton ("Jump"));
 
+		if (Input.GetButtonDown ("DownShift")) {
+			robot.transmission.DownShift ();
+		}
+
+		if (Input.GetButtonDown ("UpShift")) {
+			robot.transmission.UpShift ();
+		}
+
 	}
 }
