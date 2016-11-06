@@ -6,16 +6,21 @@ public class Transmission : MonoBehaviour {
 	private Robot robot;
 
 	private float[] gears;
-	private int currentGear = 1;
+	private int currentGear = 0;
+	private float clutch = 1;
 	private float inputSpeed;
 	private float inputTorque;
 	private float outputSpeed;
 	private float outputTorque;
 
+	private IEnumerator clutchShift;
+
 	void FixedUpdate () {
-		if (currentGear > 0) {
-			outputSpeed = inputSpeed / gears [currentGear - 1];
-			outputTorque = inputTorque * gears [currentGear - 1];
+
+		if (currentGear >= 0) {
+			outputSpeed = inputSpeed / gears [currentGear];
+			outputTorque = inputTorque * gears [currentGear] * clutch;
+			robot.engine.SetSpeed (robot.wheelJoint.jointSpeed * gears [currentGear] * clutch);
 		} else {
 			outputSpeed = 0;
 			outputTorque = 0;
@@ -39,17 +44,29 @@ public class Transmission : MonoBehaviour {
 	}
 
 	public void UpShift () {
+		if (clutchShift != null) {
+			StopCoroutine (clutchShift);
+		}
+			clutchShift = ClutchShift ();
+			StartCoroutine (clutchShift);
+
 		if (currentGear < gears.Length) {
-			robot.engine.isEngineClutched = true;
 			currentGear += 1;
 		}
 	}
 
 	public void DownShift () {
+		if (clutchShift != null) {
+			StopCoroutine (clutchShift);
+		}
+
 		currentGear -= 1;
 		if (currentGear <= 0) {
 			robot.engine.isEngineClutched = false;
-			currentGear = 0;
+			clutch = 0;
+		} else {
+			clutchShift = ClutchShift ();
+			StartCoroutine (clutchShift);
 		}
 	}
 
@@ -59,9 +76,31 @@ public class Transmission : MonoBehaviour {
 
 	public float GetCurrentGearRatio () {
 		if (currentGear > 0) {
-			return gears [currentGear - 1];
+			return gears [currentGear];
 		} else {
 			return 1;
 		}
+	}
+
+	public float GetCurrentTorque () {
+		return outputTorque;
+	}
+
+	public float GetClutch () {
+		return clutch;
+	}
+
+	//Private methods
+	//
+	//************************************************************
+
+	IEnumerator ClutchShift () {
+		clutch = 0;
+//		robot.engine.isEngineClutched = false;
+		while (clutch < 1) {
+			clutch += 0.05f;
+			yield return null;
+		}
+		clutch = 1;
 	}
 }

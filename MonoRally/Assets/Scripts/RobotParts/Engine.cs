@@ -12,8 +12,13 @@ public class Engine : MonoBehaviour {
 	private float minSpeed;
 	private float input;
 	private float speed = 0;
+
+	private float inputSpeed;
+	private float outputSpeed;
+	private float outputTorque;
 	private float torque;
 	private float wheelAngularDrag;
+	private float clutch;
 
 	private float smoothV = 0;
 
@@ -27,14 +32,17 @@ public class Engine : MonoBehaviour {
 	// Update is called once per frame
 	void FixedUpdate () {
 
-		//When engine is clutched, current engine speed is driven by wheel speed
-		if (isEngineClutched) {
-			float wheelSpeed = Mathf.Abs (robot.wheelJoint.jointSpeed);
-			float gearRatio = robot.transmission.GetCurrentGearRatio ();
+		clutch = robot.transmission.GetClutch ();
 
-			speed = Mathf.SmoothDamp(speed, wheelSpeed * gearRatio, ref smoothV, 0.05f);
+		//When engine is clutched, current engine speed is driven by wheel speed
+		if (clutch >= 1) {
+//			float wheelSpeed = Mathf.Abs (robot.wheelJoint.jointSpeed);
+			float gearRatio = robot.transmission.GetCurrentGearRatio ();
+			speed = inputSpeed;
+//			speed = Mathf.SmoothDamp(speed, wheelSpeed * gearRatio, ref smoothV, 0.05f);
 			speed = Mathf.Clamp (speed, minSpeed, maxSpeed);
-			torque = torqueCurve.Evaluate (speed / maxSpeed) * maxTorque * input;
+
+			outputTorque = torqueCurve.Evaluate (speed / maxSpeed) * maxTorque * input;
 
 			//Engine brake effects. Higher engine speeds increase engine resistence
 			if (input == 0) {
@@ -44,26 +52,29 @@ public class Engine : MonoBehaviour {
 				robot.wheel.ApplyEngineDrag (0);
 			}
 
-			//Temporary code for direct wheel control
-//			robot.wheelJoint.SetMotorValues (torque, -maxSpeed);
-
-			robot.transmission.ApplyMotorForce (maxSpeed, torque);
+			robot.transmission.ApplyMotorForce (maxSpeed, outputTorque);
 		
 		//When engine isn't clutched, engine speed is controlled by a fake inertia based on accelerator input
 		} else {
 			
-			float targetSpeed = maxSpeed * input;
+			float targetSpeed = Mathf.Lerp (maxSpeed * input, inputSpeed, robot.transmission.GetClutch());
 			speed = Mathf.SmoothDamp (speed, targetSpeed, ref smoothV, 0.1f);
-			torque = torqueCurve.Evaluate (speed / maxSpeed) * maxTorque;
+			outputTorque = torqueCurve.Evaluate (speed / maxSpeed) * maxTorque;
 
 			robot.wheelJoint.SetMotorValues (0, 0);
 			robot.wheel.ApplyEngineDrag (0);
+
+			robot.transmission.ApplyMotorForce (maxSpeed, outputTorque);
 		}
 
 	}
 
 	public void SetInput (float value) {
 		input = Mathf.Abs (value);
+	}
+
+	public void SetSpeed (float value) {
+		inputSpeed = Mathf.Abs (value);
 	}
 
 	public void ToggleCluth () {

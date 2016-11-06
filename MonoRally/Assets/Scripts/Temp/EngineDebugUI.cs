@@ -27,7 +27,7 @@ public class EngineDebugUI : MonoBehaviour {
 		speed.value = robot.engine.GetSpeed ();
 
 		torque.SetMaxValue (robot.engine.maxTorque * robot.transmission.GetCurrentGearRatio ());
-		torque.value = robot.engine.GetTorque () * robot.transmission.GetCurrentGearRatio ();
+		torque.value = robot.transmission.GetCurrentTorque();
 
 		wheelSpeed.SetMaxValue (robot.engine.maxSpeed / robot.transmission.GetCurrentGearRatio ());
 		wheelSpeed.value = Mathf.Abs(robot.wheelJoint.jointSpeed);
