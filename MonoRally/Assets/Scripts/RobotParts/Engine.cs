@@ -16,17 +16,13 @@ public class Engine : MonoBehaviour {
 	private float inputSpeed;
 	private float outputSpeed;
 	private float outputTorque;
-	private float torque;
-	private float wheelAngularDrag;
 	private float clutch;
 
 	private float smoothV = 0;
 
-	public bool isEngineClutched = true;
-
 	// Use this for initialization
 	void Start () {
-		wheelAngularDrag = robot.wheelRigidbody.angularDrag;
+
 	}
 	
 	// Update is called once per frame
@@ -36,10 +32,9 @@ public class Engine : MonoBehaviour {
 
 		//When engine is clutched, current engine speed is driven by wheel speed
 		if (clutch >= 1) {
-//			float wheelSpeed = Mathf.Abs (robot.wheelJoint.jointSpeed);
+
 			float gearRatio = robot.transmission.GetCurrentGearRatio ();
-			speed = inputSpeed;
-//			speed = Mathf.SmoothDamp(speed, wheelSpeed * gearRatio, ref smoothV, 0.05f);
+			speed = Mathf.SmoothDamp(speed, inputSpeed, ref smoothV, 0.05f);
 			speed = Mathf.Clamp (speed, minSpeed, maxSpeed);
 
 			outputTorque = torqueCurve.Evaluate (speed / maxSpeed) * maxTorque * input;
@@ -77,16 +72,12 @@ public class Engine : MonoBehaviour {
 		inputSpeed = Mathf.Abs (value);
 	}
 
-	public void ToggleCluth () {
-		isEngineClutched = !isEngineClutched;
-	}
-
 	public float GetSpeed () {
 		return speed;
 	}
 
 	public float GetTorque () {
-		return torque;
+		return outputTorque;
 	}
 
 	public void LoadData (EngineData data) {
