@@ -29,5 +29,11 @@ public class SimpleController : MonoBehaviour {
 			robot.transmission.UpShift ();
 		}
 
+		robot.boost.ChargeBoost (Input.GetButton ("Boost"));
+		if (Input.GetButtonUp ("Boost")) {
+			robot.boost.ReleaseBoost ();
+		}
+
+
 	}
 }
