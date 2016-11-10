@@ -30,6 +30,10 @@ public class Brakes : MonoBehaviour {
 		input = value;
 	}
 
+	public float GetBrakeTorque () {
+		return brakeTorque * input;
+	}
+
 	public void LoadData (BrakeData data) {
 		robot = GetComponentInParent<Robot> ();
 

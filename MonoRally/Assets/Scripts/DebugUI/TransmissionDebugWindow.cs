@@ -32,7 +32,7 @@ public class TransmissionDebugWindow : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		outputSpeed.value = transmission.GetSpeed ();
+		outputSpeed.value = robot.engine.GetSpeed() / transmission.GetCurrentGearRatio ();
 		outputTorque.value = transmission.GetTorque ();
 		clutch.value = transmission.GetClutch ();
 		currentGear.SetValue (transmission.GetCurrentGear ());
