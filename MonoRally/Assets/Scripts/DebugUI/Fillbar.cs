@@ -11,6 +11,7 @@ public class Fillbar : MonoBehaviour {
 
 	private float maxValue = 1;
 	public float value = 0;
+	public bool isFractional = false;
 
 	// Use this for initialization
 	void Start () {
@@ -29,7 +30,11 @@ public class Fillbar : MonoBehaviour {
 		}
 
 		fill.fillAmount = fillAmount;
-		valueIndicator.text = value.ToString ("F0") + " / " + maxValue.ToString ("F0");
+		if (isFractional) {
+			valueIndicator.text = value.ToString ("F1") + " / " + maxValue.ToString ("F1");
+		} else {
+			valueIndicator.text = value.ToString ("F0") + " / " + maxValue.ToString ("F0");
+		}
 	}
 
 	public void SetLabel (string label) {
