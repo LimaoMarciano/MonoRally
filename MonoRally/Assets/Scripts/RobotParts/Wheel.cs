@@ -98,6 +98,10 @@ public class Wheel : MonoBehaviour {
 		return rb.velocity.magnitude;
 	}
 
+	public int GetFacing () {
+		return facing;
+	}
+
 	void OnCollisionEnter2D () {
 		isGrounded = true;
 	}

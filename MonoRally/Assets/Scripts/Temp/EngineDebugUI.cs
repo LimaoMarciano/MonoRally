@@ -9,6 +9,7 @@ public class EngineDebugUI : MonoBehaviour {
 	public Fillbar speed;
 	public Fillbar wheelSpeed;
 	public Fillbar torque;
+	public Fillbar boost;
 	public Text gear;
 	public Text speedometer;
 
@@ -20,6 +21,8 @@ public class EngineDebugUI : MonoBehaviour {
 		torque.SetLabel ("Engine torque");
 		wheelSpeed.SetMaxValue (robot.engine.maxSpeed);
 		wheelSpeed.SetLabel ("Wheel speed");
+		boost.SetLabel ("Boost");
+		boost.SetMaxValue (1);
 	}
 	
 	// Update is called once per frame
@@ -31,6 +34,8 @@ public class EngineDebugUI : MonoBehaviour {
 
 		wheelSpeed.SetMaxValue (robot.engine.maxSpeed / robot.transmission.GetCurrentGearRatio ());
 		wheelSpeed.value = Mathf.Abs(robot.wheelJoint.jointSpeed);
+
+		boost.value = robot.boost.GetChargeValue ();
 
 		gear.text = robot.transmission.GetCurrentGear ().ToString ();
 		float speedKmH = robot.wheel.GetCurrentSpeed () * 3.6f;

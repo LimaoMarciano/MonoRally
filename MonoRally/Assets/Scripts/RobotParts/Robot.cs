@@ -12,6 +12,7 @@ public class Robot : MonoBehaviour {
 	public StabilizerData stabilizerData;
 	public JumpMechanismData jumpMechanismData;
 	public BrakeData brakeData;
+	public BoostData boostData;
 
 //	public GameObject body;
 	[HideInInspector] public Body body;
@@ -27,6 +28,7 @@ public class Robot : MonoBehaviour {
 	[HideInInspector] public Suspension suspention;
 	[HideInInspector] public Stabilizer stabilizer;
 	[HideInInspector] public JumpMechanism jumpMechanism;
+	[HideInInspector] public Boost boost;
 
 	// Use this for initialization
 	void Awake () {
@@ -55,6 +57,13 @@ public class Robot : MonoBehaviour {
 		Debug.Log ("Creating transmission...");
 		transmission = body.gameObject.AddComponent<Transmission> ();
 		transmission.LoadData (transmissionData);
+
+		Debug.Log ("Creating boost...");
+		GameObject boostObject = new GameObject ("Boost");
+		boostObject.transform.SetParent (body.transform);
+		boostObject.transform.localPosition = bodyData.boostPosition;
+		boost = boostObject.gameObject.AddComponent<Boost> ();
+		boost.LoadData (boostData);
 
 		Debug.Log ("Creating wheel...");
 		GameObject wheelObject = new GameObject ("Wheel");
