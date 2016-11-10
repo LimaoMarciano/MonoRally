@@ -6,6 +6,7 @@ public class BoostData : ScriptableObject {
 
 	public string model;
 	public string manufacturer;
+	public Sprite sprite;
 	public float force;
 	public float chargeTime;
 }

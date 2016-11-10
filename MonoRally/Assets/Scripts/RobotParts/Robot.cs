@@ -59,7 +59,10 @@ public class Robot : MonoBehaviour {
 		transmission.LoadData (transmissionData);
 
 		Debug.Log ("Creating boost...");
-		boost = body.gameObject.AddComponent<Boost> ();
+		GameObject boostObject = new GameObject ("Boost");
+		boostObject.transform.SetParent (body.transform);
+		boostObject.transform.localPosition = bodyData.boostPosition;
+		boost = boostObject.gameObject.AddComponent<Boost> ();
 		boost.LoadData (boostData);
 
 		Debug.Log ("Creating wheel...");
