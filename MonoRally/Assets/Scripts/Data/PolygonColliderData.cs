@@ -1,12 +1,16 @@
 ﻿using UnityEngine;
-using UnityEditor;
 using System.Collections;
+
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 [CreateAssetMenu(fileName = "PolygonPathData", menuName = "RobotRally/Polygon Path", order = 51)]
 public class PolygonColliderData : ScriptableObject {
 	public string identifier;
 	public Vector2[] path;
 
+	#if UNITY_EDITOR
 	void OnEnable() {
 		if (path == null) {
 			GameObject go = Selection.activeGameObject;
@@ -19,28 +23,6 @@ public class PolygonColliderData : ScriptableObject {
 		}
 			
 	}
+	#endif
 
 }
-
-
-//public class PolygonColliderData {
-//
-//	public Vector2Data[] path;
-//
-//	public class Vector2Data {
-//		public float x = 0;
-//		public float y = 0;
-//	}
-//
-//	public void SetVector2Data (Vector2[] polygonPath) {
-//		Vector2Data[] data = new Vector2Data[polygonPath.Length];
-//		for (int i = 0; i < data.Length; i++) {
-//			Vector2Data vec;
-//			vec.x = polygonPath [i].x;
-//			vec.y = polygonPath [i].y;
-//			data [i] = vec;
-//		}
-//
-//		path = data;
-//	}
-//}
