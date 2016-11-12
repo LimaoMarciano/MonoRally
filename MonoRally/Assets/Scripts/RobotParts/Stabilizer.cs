@@ -15,6 +15,8 @@ public class Stabilizer : MonoBehaviour {
 	private Vector2 targetDirection = Vector2.up;
 
 	private float airTimer = 0;
+	private float torque;
+	private float angleDistance;
 
 	// Use this for initialization
 	void Start () {
@@ -60,6 +62,22 @@ public class Stabilizer : MonoBehaviour {
 		gain = data.gain;
 	}
 
+	public float GetTorque() {
+		return torque;
+	}
+
+	public float GetAngleDistance() {
+		return angleDistance;
+	}
+
+	public float GetMaxTorque() {
+		return maxTorque;
+	}
+
+	public float GetAngleLimit() {
+		return angleLimit;
+	}
+
 	private float SignedAngle (Vector3 a, Vector3 b) {
 		float sign = Mathf.Sign(Vector3.Cross(b, a).z);
 		return Vector3.Angle (a, b) * sign;
@@ -67,15 +85,16 @@ public class Stabilizer : MonoBehaviour {
 
 	private void StabilizeBody (float targetAngle) {
 
-		float dist = targetAngle - bodyAngle;
+		angleDistance = targetAngle - bodyAngle;
 		// calc a target vel proportional to distance (clamped to maxVel)
-		float targetAngularSpeed = Mathf.Clamp (toAngularSpeed * dist, -maxAngularSpeed, maxAngularSpeed);
+		float targetAngularSpeed = Mathf.Clamp (toAngularSpeed * angleDistance, -maxAngularSpeed, maxAngularSpeed);
 		// calculate the velocity error
 		float error = targetAngularSpeed - rb.angularVelocity;
 		// calc a force proportional to the error (clamped to maxForce)
-		float torque = Mathf.Clamp(gain * error, -maxTorque, maxTorque);
+		torque = Mathf.Clamp(gain * error, -maxTorque, maxTorque);
 
 		rb.AddTorque(torque, ForceMode2D.Force);
 	}
+		
 
 }

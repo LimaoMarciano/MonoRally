@@ -87,7 +87,11 @@ public class Transmission : MonoBehaviour {
 		}
 	}
 
-	public float GetCurrentGear () {
+	public float[] GetGears () {
+		return gears;
+	}
+
+	public int GetCurrentGear () {
 		return currentGear;
 	}
 
@@ -97,6 +101,10 @@ public class Transmission : MonoBehaviour {
 		} else {
 			return 1;
 		}
+	}
+
+	public float GetSpeed () {
+		return outputSpeed;
 	}
 
 	public float GetTorque () {
