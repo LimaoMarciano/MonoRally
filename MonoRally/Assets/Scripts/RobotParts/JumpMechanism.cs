@@ -40,12 +40,10 @@ public class JumpMechanism : MonoBehaviour {
 //		}
 
 		if (isHoldingJump && isJumpBoostAllowed) {
-			Debug.Log ("Boosting!");
 			rb.AddForce (jumpDirection * jumpBoostForce, ForceMode2D.Force);
 		}
 
 		if (isHoldingJump && robot.wheel.isGrounded && isJumpAllowed) {
-			Debug.Log ("Jumped!");
 			rb.AddForce (jumpDirection * jumpForce, ForceMode2D.Impulse);
 			boostTimer = StartBoostTimer ();
 			StartCoroutine (boostTimer);
