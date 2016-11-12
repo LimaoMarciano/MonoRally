@@ -9,11 +9,18 @@ public class BrakesDebugWindow : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		brakeTorque.SetMaxValue (robot.brakes.brakeTorque);
+		robot = RaceManager.instance.robot;
+		if (robot) {
+			brakeTorque.SetMaxValue (robot.brakes.brakeTorque);
+		}
+
+		brakeTorque.SetLabel ("Torque");
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		brakeTorque.value = robot.brakes.GetBrakeTorque ();
+		if (robot) {
+			brakeTorque.value = robot.brakes.GetBrakeTorque ();
+		}
 	}
 }

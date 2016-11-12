@@ -11,19 +11,25 @@ public class StabilizerDebugWindow : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		robot = RaceManager.instance.robot;
+
 		torque.SetLabel ("Torque");
-		torque.SetMaxValue (robot.stabilizer.GetMaxTorque ());
-
 		angle.SetLabel ("Angle");
-		angle.SetMaxValue (robot.stabilizer.GetAngleLimit ());
-
 		angleDistance.SetLabel ("Angle Dist.");
+
+		if (robot) {
+			angle.SetMaxValue (robot.stabilizer.GetAngleLimit ());
+			torque.SetMaxValue (robot.stabilizer.GetMaxTorque ());
+		}
+
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		torque.value = Mathf.Abs(robot.stabilizer.GetTorque ());
-		angle.value = Mathf.Abs (robot.stabilizer.GetAngleDistance ());
-		angleDistance.SetValue (robot.stabilizer.GetAngleDistance (), true);
+		if (robot) {
+			torque.value = Mathf.Abs (robot.stabilizer.GetTorque ());
+			angle.value = Mathf.Abs (robot.stabilizer.GetAngleDistance ());
+			angleDistance.SetValue (robot.stabilizer.GetAngleDistance (), true);
+		}
 	}
 }

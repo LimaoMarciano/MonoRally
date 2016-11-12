@@ -12,14 +12,21 @@ public class BoostDebugWindow : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		boostMaxForce = robot.boost.GetBoostMaxForce ();
+		robot = RaceManager.instance.robot;
+
+		if (robot) {
+			boostMaxForce = robot.boost.GetBoostMaxForce ();
+			boostBar.SetMaxValue (boostMaxForce);
+		}
 
 		boostBar.SetLabel ("Boost force");
-		boostBar.SetMaxValue (boostMaxForce);
+		
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		boostBar.value = boostMaxForce * robot.boost.GetChargeValue ();
+		if (robot) {
+			boostBar.value = boostMaxForce * robot.boost.GetChargeValue ();
+		}
 	}
 }

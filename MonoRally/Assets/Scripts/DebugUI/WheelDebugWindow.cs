@@ -10,6 +10,8 @@ public class WheelDebugWindow : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		robot = RaceManager.instance.robot;
+
 		angularVelocity.SetLabel ("AngVelocity");
 		velocity.SetLabel ("Velocity");
 		groundedBool.SetLabel ("Is grounded?");
@@ -17,9 +19,12 @@ public class WheelDebugWindow : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		angularVelocity.SetMaxValue (robot.engine.maxSpeed / robot.transmission.GetCurrentGearRatio ());
-		angularVelocity.value = Mathf.Abs(robot.wheel.GetAngularVelocity ());
-		velocity.SetValue (robot.wheel.GetCurrentSpeed (), false);
-		groundedBool.SetValue (robot.wheel.isGrounded);
+
+		if (robot) {
+			angularVelocity.SetMaxValue (robot.engine.maxSpeed / robot.transmission.GetCurrentGearRatio ());
+			angularVelocity.value = Mathf.Abs (robot.wheel.GetAngularVelocity ());
+			velocity.SetValue (robot.wheel.GetCurrentSpeed (), false);
+			groundedBool.SetValue (robot.wheel.isGrounded);
+		}
 	}
 }

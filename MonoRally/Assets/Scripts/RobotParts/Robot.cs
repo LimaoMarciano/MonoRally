@@ -14,6 +14,8 @@ public class Robot : MonoBehaviour {
 	public BrakeData brakeData;
 	public BoostData boostData;
 
+	public VehicleConfig vehicleConfig;
+
 //	public GameObject body;
 	[HideInInspector] public Body body;
 	[HideInInspector] public WheelJoint2D wheelJoint;
@@ -32,10 +34,12 @@ public class Robot : MonoBehaviour {
 
 	// Use this for initialization
 	void Awake () {
-		InitializeRobot ();
+
 	}
 	
-	public void InitializeRobot () {
+	public void InitializeRobot ( VehicleConfig data) {
+		vehicleConfig = data;
+
 		Debug.Log ("Robot initializing...");
 
 		Debug.Log ("Creating body...");
@@ -43,35 +47,35 @@ public class Robot : MonoBehaviour {
 		bodyObject.transform.SetParent (transform);
 		bodyObject.transform.localPosition = Vector3.zero;
 		body = bodyObject.AddComponent<Body> ();
-		body.LoadData (bodyData);
+		body.LoadData (vehicleConfig.bodyData);
 
 		Debug.Log ("Creating stabilizer...");
 		stabilizer = bodyObject.AddComponent<Stabilizer> ();
-		stabilizer.LoadData (stabilizerData);
+		stabilizer.LoadData (vehicleConfig.stabilizerData);
 
 		Debug.Log ("Creating engine...");
 		engine = gameObject.AddComponent<Engine>() as Engine;
-		engine.LoadData (engineData);
+		engine.LoadData (vehicleConfig.engineData);
 		engine.SetRobotReference (this);
 
 		Debug.Log ("Creating transmission...");
 		transmission = body.gameObject.AddComponent<Transmission> ();
-		transmission.LoadData (transmissionData);
+		transmission.LoadData (vehicleConfig.transmissionData);
 
 		Debug.Log ("Creating boost...");
 		GameObject boostObject = new GameObject ("Boost");
 		boostObject.transform.SetParent (body.transform);
-		boostObject.transform.localPosition = bodyData.boostPosition;
+		boostObject.transform.localPosition = vehicleConfig.bodyData.boostPosition;
 		boost = boostObject.gameObject.AddComponent<Boost> ();
-		boost.LoadData (boostData);
+		boost.LoadData (vehicleConfig.boostData);
 
 		Debug.Log ("Creating wheel...");
 		GameObject wheelObject = new GameObject ("Wheel");
 		wheelObject.transform.SetParent (bodyObject.transform);
-		wheelObject.transform.localPosition = bodyData.wheelPosition;
+		wheelObject.transform.localPosition = vehicleConfig.bodyData.wheelPosition;
 		wheelObject.AddComponent<Wheel> ();
 		wheel = wheelObject.GetComponent<Wheel> ();
-		wheel.LoadData (wheelData);
+		wheel.LoadData (vehicleConfig.wheelData);
 		wheelRigidbody = wheelObject.GetComponent<Rigidbody2D> ();
 
 		Debug.Log ("Creating brake...");
@@ -79,25 +83,25 @@ public class Robot : MonoBehaviour {
 		brakeObject.transform.SetParent (wheelObject.transform);
 		brakeObject.transform.localPosition = Vector3.zero;
 		brakes = brakeObject.AddComponent<Brakes> ();
-		brakes.LoadData (brakeData);
+		brakes.LoadData (vehicleConfig.brakeData);
 
 		Debug.Log ("Creating wheel joint...");
 		wheelJoint = bodyObject.AddComponent<WheelJoint2D> ();
-		wheelJoint.anchor = bodyData.wheelPosition;
+		wheelJoint.anchor = vehicleConfig.bodyData.wheelPosition;
 		wheelJoint.connectedBody = wheelRigidbody;
 		wheelJoint.enableCollision = true;
 		Debug.Log ("Wheel joint created and configured");
 
 		Debug.Log ("Creating jump mechanism...");
 		jumpMechanism = bodyObject.gameObject.AddComponent<JumpMechanism> ();
-		jumpMechanism.LoadData (jumpMechanismData);
+		jumpMechanism.LoadData (vehicleConfig.jumpMechanismData);
 
 		Debug.Log ("Creating suspension...");
 		GameObject suspension = new GameObject ("Suspension");
 		suspension.transform.SetParent (body.transform);
 		suspension.transform.localPosition = body.transform.position;
 		suspention = suspension.AddComponent<Suspension> ();
-		suspention.LoadData (suspensionData);
+		suspention.LoadData (vehicleConfig.suspensionData);
 
 		Camera.main.GetComponent<CameraFollow> ().target = bodyObject.transform;
 
