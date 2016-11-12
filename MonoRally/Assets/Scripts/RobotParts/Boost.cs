@@ -83,4 +83,8 @@ public class Boost : MonoBehaviour {
 	public float GetChargeValue () {
 		return charge;
 	}
+
+	public float GetBoostMaxForce () {
+		return force;
+	}
 }
