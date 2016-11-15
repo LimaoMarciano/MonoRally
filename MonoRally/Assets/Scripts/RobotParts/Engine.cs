@@ -54,6 +54,7 @@ public class Engine : MonoBehaviour {
 			
 			float targetSpeed = Mathf.Lerp (maxSpeed * input, inputSpeed, robot.transmission.GetClutch());
 			speed = Mathf.SmoothDamp (speed, targetSpeed, ref smoothV, 0.1f);
+			speed = Mathf.Clamp (speed, minSpeed, maxSpeed);
 			outputTorque = torqueCurve.Evaluate (speed / maxSpeed) * maxTorque;
 
 			robot.wheelJoint.SetMotorValues (0, 0);
