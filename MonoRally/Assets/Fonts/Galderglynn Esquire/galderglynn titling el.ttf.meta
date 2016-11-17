@@ -1,0 +1,21 @@
+fileFormatVersion: 2
+guid: 62d2e5477d6df194aaabde765dc71290
+timeCreated: 1479343824
+licenseType: Free
+TrueTypeFontImporter:
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontNames:
+  - Galderglynn Titling
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: 58c0e4478ffe0f9419c047fab4fbdf77, type: 3}
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

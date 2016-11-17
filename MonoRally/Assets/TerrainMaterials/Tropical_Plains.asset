@@ -1,0 +1,173 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3cfe511f5ae84c24e82fbf88db7e24ae, type: 3}
+  m_Name: Tropical_Plains
+  m_EditorClassIdentifier: 
+  _fillMaterial: {fileID: 2100000, guid: a449334132e2c5e46a6641f57d8c5293, type: 2}
+  _edgeMaterial: {fileID: 2100000, guid: 7ae87b60337f62946ae8a5664bc0c5ef, type: 2}
+  _descriptors:
+  - applyTo: 0
+    zOffset: -0.2
+    yOffset: -0.58
+    leftCap:
+      serializedVersion: 2
+      x: 0.12597656
+      y: 0.29101562
+      width: 0.068359375
+      height: 0.38085938
+    innerLeftCap:
+      serializedVersion: 2
+      x: 0
+      y: 0
+      width: 0
+      height: 0
+    rightCap:
+      serializedVersion: 2
+      x: 0.68066406
+      y: 0.29101562
+      width: 0.068359375
+      height: 0.38085938
+    innerRightCap:
+      serializedVersion: 2
+      x: 0
+      y: 0
+      width: 0
+      height: 0
+    body:
+    - serializedVersion: 2
+      x: 0.19433594
+      y: 0.29101562
+      width: 0.24316406
+      height: 0.38085938
+    - serializedVersion: 2
+      x: 0.4375
+      y: 0.29101562
+      width: 0.24316406
+      height: 0.38085938
+    capOffset: -0.46
+  - applyTo: 1
+    zOffset: -0.1
+    yOffset: 0.36
+    leftCap:
+      serializedVersion: 2
+      x: 0.20117188
+      y: 0.7519531
+      width: 0
+      height: 0
+    innerLeftCap:
+      serializedVersion: 2
+      x: 0
+      y: 0
+      width: 0
+      height: 0
+    rightCap:
+      serializedVersion: 2
+      x: 0.69921875
+      y: 0.7519531
+      width: 0
+      height: 0
+    innerRightCap:
+      serializedVersion: 2
+      x: 0
+      y: 0
+      width: 0
+      height: 0
+    body:
+    - serializedVersion: 2
+      x: 0.20117188
+      y: 0.7519531
+      width: 0.24902344
+      height: 0.1484375
+    - serializedVersion: 2
+      x: 0.4501953
+      y: 0.7519531
+      width: 0.24902344
+      height: 0.1484375
+    capOffset: 0
+  - applyTo: 2
+    zOffset: -0.1
+    yOffset: 0.21
+    leftCap:
+      serializedVersion: 2
+      x: 0.20117188
+      y: 0.7441406
+      width: 0
+      height: 0
+    innerLeftCap:
+      serializedVersion: 2
+      x: 0
+      y: 0
+      width: 0
+      height: 0
+    rightCap:
+      serializedVersion: 2
+      x: 0.69921875
+      y: 0.7441406
+      width: 0
+      height: 0
+    innerRightCap:
+      serializedVersion: 2
+      x: 0
+      y: 0
+      width: 0
+      height: 0
+    body:
+    - serializedVersion: 2
+      x: 0.20117188
+      y: 0.7441406
+      width: 0.24902344
+      height: 0.171875
+    - serializedVersion: 2
+      x: 0.4501953
+      y: 0.7441406
+      width: 0.24902344
+      height: 0.171875
+    capOffset: -0.42
+  - applyTo: 3
+    zOffset: -0.1
+    yOffset: 0.32
+    leftCap:
+      serializedVersion: 2
+      x: 0.19921875
+      y: 0.7441406
+      width: 0
+      height: 0
+    innerLeftCap:
+      serializedVersion: 2
+      x: 0
+      y: 0
+      width: 0
+      height: 0
+    rightCap:
+      serializedVersion: 2
+      x: 0.6982422
+      y: 0.7441406
+      width: 0
+      height: 0
+    innerRightCap:
+      serializedVersion: 2
+      x: 0
+      y: 0
+      width: 0
+      height: 0
+    body:
+    - serializedVersion: 2
+      x: 0.19921875
+      y: 0.7441406
+      width: 0.24951172
+      height: 0.17578125
+    - serializedVersion: 2
+      x: 0.44873047
+      y: 0.7441406
+      width: 0.24951172
+      height: 0.17578125
+    capOffset: 0.1
+  isPixel: 0
