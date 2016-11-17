@@ -10,6 +10,14 @@ public class RaceManager : MonoBehaviour {
 	public VehicleConfig vehicleConfig;
 	public Robot robot;
 
+	public delegate void PauseAction ();
+	public static event PauseAction OnPaused;
+
+	public delegate void UnpauseAction ();
+	public static event UnpauseAction OnUnpause;
+
+	private bool isPaused = false;
+
 	void Awake () {
 		if (instance == null) {
 			
@@ -40,7 +48,13 @@ public class RaceManager : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-	
+		if (Input.GetButtonDown ("Pause")) {
+			if (isPaused) {
+				Unpause ();
+			} else {
+				Pause ();
+			}
+		}
 	}
 
 	public void AddSpawnPoint (VehicleSpawn spawn) {
@@ -83,5 +97,20 @@ public class RaceManager : MonoBehaviour {
 		return true;
 	}
 
+	public void Pause () {
+		if (OnPaused != null) {
+			OnPaused ();
+		}
+		isPaused = true;
+		Time.timeScale = 0;
+	}
+
+	public void Unpause () {
+		if (OnUnpause != null) {
+			OnUnpause ();
+		}
+		isPaused = false;
+		Time.timeScale = 1;
+	}
 
 }
