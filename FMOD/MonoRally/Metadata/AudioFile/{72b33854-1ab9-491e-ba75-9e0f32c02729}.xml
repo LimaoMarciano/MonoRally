@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.01.08.00">
+    <object class="AudioFile" id="{72b33854-1ab9-491e-ba75-9e0f32c02729}">
+        <property name="assetPath">
+            <value>Collision/light_crash.wav</value>
+        </property>
+        <property name="frequencyInKHz">
+            <value>48</value>
+        </property>
+        <property name="channelCount">
+            <value>2</value>
+        </property>
+        <property name="length">
+            <value>0.81214583333333334</value>
+        </property>
+        <relationship name="masterAssetFolder">
+            <destination>{1076def2-ed95-4e68-9f26-1b78b4bb670f}</destination>
+        </relationship>
+    </object>
+</objects>

@@ -12,4 +12,8 @@ public class BodyData : ScriptableObject {
 	public Vector3 boostPosition;
 	public float mass;
 	public float drag;
+
+	[Header("Sound")]
+	[FMODUnity.EventRef]
+	public string collisionSound;
 }
