@@ -6,6 +6,8 @@ public class EngineData : ScriptableObject {
 
 	public string manufacturer;
 	public string model;
+	[FMODUnity.EventRef]
+	public string soundEvent;
 	public float minSpeed = 500;
 	public float maxSpeed = 10000;
 	public float maxTorque = 450;

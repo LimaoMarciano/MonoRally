@@ -9,6 +9,7 @@ public class Engine : MonoBehaviour {
 	public AnimationCurve torqueCurve;
 
 	private Robot robot;
+	private EngineSound engineSound;
 	private float minSpeed;
 	private float input;
 	private float speed = 0;
@@ -63,6 +64,8 @@ public class Engine : MonoBehaviour {
 			robot.transmission.ApplyMotorForce (maxSpeed, outputTorque);
 		}
 
+		engineSound.engineRev = speed / maxSpeed;
+
 	}
 
 	public void SetInput (float value) {
@@ -88,6 +91,8 @@ public class Engine : MonoBehaviour {
 		engineBrakeForce = data.engineBrakeForce;
 		torqueCurve = data.torqueCurve;
 
+		engineSound = gameObject.AddComponent<EngineSound> ();
+		engineSound.EngineStateEvent = data.soundEvent;
 		Debug.Log ("Engine data loaded.");
 	}
 

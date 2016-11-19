@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.01.08.00">
+    <object class="AudioFile" id="{34fa0e5d-2d30-48aa-84ca-fcfe0fa32ed5}">
+        <property name="assetPath">
+            <value>Engine/engineloop02.wav</value>
+        </property>
+        <property name="isStreaming">
+            <value>true</value>
+        </property>
+        <property name="frequencyInKHz">
+            <value>44.0999985</value>
+        </property>
+        <property name="channelCount">
+            <value>2</value>
+        </property>
+        <property name="length">
+            <value>11.46922902494331</value>
+        </property>
+        <relationship name="masterAssetFolder">
+            <destination>{1076def2-ed95-4e68-9f26-1b78b4bb670f}</destination>
+        </relationship>
+    </object>
+</objects>
