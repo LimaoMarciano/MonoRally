@@ -32,7 +32,7 @@ public class GroundSound : MonoBehaviour {
 	void Update () {
 
 		float speed = Mathf.Abs (rb.velocity.magnitude);
-		float speedRatio = Mathf.Clamp01 (speed / 15f);
+		float speedRatio = Mathf.Clamp01 (speed / 20f);
 		Debug.Log ("Speed ratio: " + speedRatio);
 
 		if (robot.wheel.isGrounded) {

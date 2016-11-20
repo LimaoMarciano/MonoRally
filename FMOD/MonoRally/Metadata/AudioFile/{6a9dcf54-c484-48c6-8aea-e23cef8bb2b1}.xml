@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <objects serializationModel="Studio.01.08.00">
-    <object class="AudioFile" id="{98170597-cc03-4681-ac82-2c7d7497b2a8}">
+    <object class="AudioFile" id="{6a9dcf54-c484-48c6-8aea-e23cef8bb2b1}">
         <property name="assetPath">
             <value>Road/gravel-road.wav</value>
         </property>
