@@ -23,7 +23,6 @@ public class Speedometer : MonoBehaviour {
 		maxMotorSpeed = robot.engine.maxSpeed;
 
 		range = maxNeedle - minNeedle;
-		Debug.Log (range);
 		redline.fillAmount = 0.665f - ((redlineMotorSpeed * 0.665f) / maxMotorSpeed);
 	}
 	

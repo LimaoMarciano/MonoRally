@@ -7,23 +7,49 @@ public class CollisionSound : MonoBehaviour {
 	public CollisionDetector detector;
 	public string collisionStateEvent;
 
+	private EventInstance grindSound; 
+	private bool isGrinding = false;
+
 	// Use this for initialization
 	void Start () {
 		detector.OnCollision += OnCollision;
+		detector.OnDragging += OnDragging;
+
+		grindSound = FMODUnity.RuntimeManager.CreateInstance ("event:/Collision/MetalScratch");
+		if (grindSound != null) {
+
+			grindSound.start ();
+			FMODUnity.RuntimeManager.AttachInstanceToGameObject (grindSound, transform, null);
+
+		}
 	}
 		
 
 	void OnDisable () {
 		detector.OnCollision -= OnCollision;
+		detector.OnDragging -= OnDragging;
+		grindSound.release ();
 	}
 	
 	// Update is called once per frame
 	void Update () {
-	
+		if (isGrinding) {
+			if (detector.dragging.gameObject.layer == LayerMask.NameToLayer ("Road")) {
+				if (detector.dragging.relativeVelocity.magnitude > 0.1f) {
+					grindSound.setParameterValue ("Active", 1);
+				} else {
+					grindSound.setParameterValue ("Active", 0);
+				}
+			}
+
+		} else {
+			grindSound.setParameterValue ("Active", 0);
+		}
+
+		isGrinding = false;
 	}
 
 	void OnCollision () {
-		Debug.Log ("Collided!");
 		if (detector.collision.gameObject.layer == LayerMask.NameToLayer ("Road")) {
 			
 			EventInstance sound = FMODUnity.RuntimeManager.CreateInstance (collisionStateEvent);
@@ -40,4 +66,7 @@ public class CollisionSound : MonoBehaviour {
 		}
 	}
 
+	void OnDragging () {
+		isGrinding = true;
+	}
 }

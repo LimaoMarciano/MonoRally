@@ -22,7 +22,6 @@ public class WheelSound : MonoBehaviour {
 	}
 
 	void OnCollision () {
-		Debug.Log ("Collided!");
 		if (detector.collision.gameObject.layer == LayerMask.NameToLayer ("Road")) {
 			if (detector.collision.relativeVelocity.magnitude > 3) {
 				FMODUnity.RuntimeManager.PlayOneShot (collisionStateEvent, transform.position);

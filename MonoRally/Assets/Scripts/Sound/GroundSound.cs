@@ -33,9 +33,15 @@ public class GroundSound : MonoBehaviour {
 
 		float speed = Mathf.Abs (rb.velocity.magnitude);
 		float speedRatio = Mathf.Clamp01 (speed / 20f);
-		Debug.Log ("Speed ratio: " + speedRatio);
+		float tyreSlip = Mathf.Abs(robot.wheel.GetSlip ());
 
 		if (robot.wheel.isGrounded) {
+
+			if (tyreSlip > 3) {
+				soundState.setParameterValue ("Sliding", 1);
+			} else {
+				soundState.setParameterValue ("Sliding", 0);
+			}
 
 			if (speed > 1) {
 			
@@ -43,14 +49,13 @@ public class GroundSound : MonoBehaviour {
 				soundState.setParameterValue ("Speed", speedRatio);
 
 			} else {
-				Debug.Log ("Sound disabled");
 				soundState.setParameterValue ("Enable", 0);
 
 			}
 		} else {
 
 			soundState.setParameterValue ("Enable", 0);
-
+			soundState.setParameterValue ("Sliding", 0);
 		}
 
 	}

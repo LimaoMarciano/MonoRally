@@ -16,6 +16,9 @@ public class Wheel : MonoBehaviour {
 
 	private float brakeTorque;
 
+	private float tyrePerimeterPerDeg;
+	private float tyreSlip;
+
 	public bool isGrounded = false;
 	public Vector2 groundNormal = new Vector2(0, 1);
 
@@ -23,7 +26,11 @@ public class Wheel : MonoBehaviour {
 //	void Awake () {
 //		
 //	}
-	
+
+	void Start () {
+		tyrePerimeterPerDeg = (GetComponent<CircleCollider2D> ().radius * 2 * Mathf.PI) / 360;
+	}
+
 
 	void FixedUpdate () {
 		rb.angularDrag = wheelAngularDrag + engineDrag;
@@ -39,6 +46,14 @@ public class Wheel : MonoBehaviour {
 		}
 
 		robot.wheelJoint.SetMotorValues (speed * facing, torque);
+
+		//Calculating tyre slip
+		float rbSpeed = rb.velocity.magnitude;
+		if (rb.velocity.x < 0) {
+			rbSpeed *= -1;
+		}
+		tyreSlip = (-robot.wheelJoint.jointSpeed * tyrePerimeterPerDeg) - rbSpeed;
+
 	}
 
 	public void ApplyMotorForce (float speed, float torque) {
@@ -109,6 +124,10 @@ public class Wheel : MonoBehaviour {
 
 	public float GetAngularVelocity () {
 		return rb.angularVelocity;
+	}
+
+	public float GetSlip () {
+		return tyreSlip;
 	}
 
 	void OnCollisionEnter2D () {
