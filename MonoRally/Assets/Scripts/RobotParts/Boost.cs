@@ -7,6 +7,9 @@ public class Boost : MonoBehaviour {
 	private Rigidbody2D bodyRb;
 	private SpriteRenderer spriteRenderer;
 
+	public delegate void BoostReleaseEvent ();
+	public event BoostReleaseEvent OnBoostRelease;
+
 	private float force;
 	private float chargeTime;
 
@@ -56,6 +59,8 @@ public class Boost : MonoBehaviour {
 			charge = 0;
 			timer = 0;
 			doReleaseCharge = false;
+
+			OnBoostRelease ();
 		}
 	}
 
