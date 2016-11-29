@@ -5,7 +5,7 @@
             <value>BoostCharge</value>
         </property>
         <property name="outputFormat">
-            <value>1</value>
+            <value>0</value>
         </property>
         <relationship name="mixer">
             <destination>{51ab7f43-dafe-47c7-a87c-c8fb74e6440a}</destination>
@@ -59,7 +59,17 @@
             <destination>{4fe7d514-f08e-491b-835e-882b0d6053b2}</destination>
         </relationship>
     </object>
-    <object class="EventAutomatableProperties" id="{14d138ef-1122-4c77-8b41-294e32c20093}"/>
+    <object class="EventAutomatableProperties" id="{14d138ef-1122-4c77-8b41-294e32c20093}">
+        <property name="maxVoices">
+            <value>4</value>
+        </property>
+        <property name="voiceStealing">
+            <value>1</value>
+        </property>
+        <property name="priority">
+            <value>3</value>
+        </property>
+    </object>
     <object class="MarkerTrack" id="{f4f2c275-24df-454c-bbf1-4dd7bd1cabdb}"/>
     <object class="GroupTrack" id="{c5a2201a-7aa1-4d56-89dd-7f11bc0b8ea1}">
         <relationship name="automationTracks">
@@ -167,7 +177,11 @@
             <destination>{342bf4a7-5555-454b-9bc3-8bfdc5ccc605}</destination>
         </relationship>
     </object>
-    <object class="MixerBusPanner" id="{32347c13-62d3-455f-95b3-76540c376380}"/>
+    <object class="MixerBusPanner" id="{32347c13-62d3-455f-95b3-76540c376380}">
+        <property name="outputFormatOverridden">
+            <value>true</value>
+        </property>
+    </object>
     <object class="MixerBusFader" id="{93c570e8-e902-4bb3-98c5-66a22251fd01}"/>
     <object class="MixerBusEffectChain" id="{cec48418-1400-4eaf-9b83-e9dee5ad7bae}">
         <relationship name="effects">

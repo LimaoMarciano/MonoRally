@@ -23,6 +23,10 @@ public class EngineSound : MonoBehaviour {
 			FMODUnity.RuntimeManager.AttachInstanceToGameObject (engineState, body.transform, null);
 		}
 	}
+
+	void OnDisable () {
+		engineState.stop (STOP_MODE.ALLOWFADEOUT);
+	}
 	
 	// Update is called once per frame
 	void Update () {

@@ -10,12 +10,13 @@ public class BoostSound : MonoBehaviour {
 	private string releaseStateEvent = "event:/Engine/BoostRelease";
 	private EventInstance soundEvent;
 
+	private bool isSoundStarted = false;
+
 	// Use this for initialization
 	void Start () {
 		
 		boost = RaceManager.instance.robot.boost;
 		soundEvent = FMODUnity.RuntimeManager.CreateInstance (soundStateEvent);
-		FMODUnity.RuntimeManager.AttachInstanceToGameObject (soundEvent, boost.transform, null);
 
 		boost.OnBoostRelease += BoostReleaseSound;
 
@@ -30,14 +31,21 @@ public class BoostSound : MonoBehaviour {
 		float charge = boost.GetChargeValue ();
 
 		if (charge > 0) {
-			soundEvent.start ();
+			if (!isSoundStarted) {
+				soundEvent.start ();
+				FMODUnity.RuntimeManager.AttachInstanceToGameObject (soundEvent, boost.transform, null);
+				isSoundStarted = true;
+			}
+
 			soundEvent.setParameterValue ("Charge", charge);
-		} else {
-			soundEvent.stop (STOP_MODE.ALLOWFADEOUT);
+
 		}
 	}
 
 	private void BoostReleaseSound () {
+		isSoundStarted = false;
+		soundEvent.stop (STOP_MODE.ALLOWFADEOUT);
 		FMODUnity.RuntimeManager.PlayOneShot (releaseStateEvent, boost.transform.position);
 	}
+		
 }

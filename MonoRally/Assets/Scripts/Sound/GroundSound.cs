@@ -27,7 +27,11 @@ public class GroundSound : MonoBehaviour {
 
 		}
 	}
-	
+
+	void OnDisable () {
+		soundState.stop (STOP_MODE.ALLOWFADEOUT);
+	}
+
 	// Update is called once per frame
 	void Update () {
 
@@ -36,6 +40,7 @@ public class GroundSound : MonoBehaviour {
 		float tyreSlip = Mathf.Abs(robot.wheel.GetSlip ());
 
 		if (robot.wheel.isGrounded) {
+
 
 			if (tyreSlip > 3) {
 				soundState.setParameterValue ("Sliding", 1);
@@ -53,7 +58,7 @@ public class GroundSound : MonoBehaviour {
 
 			}
 		} else {
-
+			
 			soundState.setParameterValue ("Enable", 0);
 			soundState.setParameterValue ("Sliding", 0);
 		}
