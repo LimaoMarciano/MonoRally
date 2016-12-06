@@ -81,6 +81,11 @@ public class Boost : MonoBehaviour {
 		spriteRenderer = gameObject.AddComponent<SpriteRenderer> ();
 		spriteRenderer.sprite = data.sprite;
 		spriteRenderer.sortingOrder = 6;
+
+		BoostSound boostSound = gameObject.AddComponent<BoostSound> ();
+		boostSound.releaseStateEvent = data.releaseSound;
+		boostSound.chargeStateEvent = data.chargeSound;
+
 		Debug.Log ("Boost data loaded.");
 
 	}

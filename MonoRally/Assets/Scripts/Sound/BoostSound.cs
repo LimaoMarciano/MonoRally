@@ -4,19 +4,18 @@ using FMOD.Studio;
 
 public class BoostSound : MonoBehaviour {
 
-	public Boost boost;
+	public string chargeStateEvent;
+	public string releaseStateEvent;
 
-	private string soundStateEvent = "event:/Engine/BoostCharge";
-	private string releaseStateEvent = "event:/Engine/BoostRelease";
+	private Boost boost;
 	private EventInstance soundEvent;
-
 	private bool isSoundStarted = false;
 
 	// Use this for initialization
 	void Start () {
 		
 		boost = RaceManager.instance.robot.boost;
-		soundEvent = FMODUnity.RuntimeManager.CreateInstance (soundStateEvent);
+		soundEvent = FMODUnity.RuntimeManager.CreateInstance (chargeStateEvent);
 
 		boost.OnBoostRelease += BoostReleaseSound;
 
