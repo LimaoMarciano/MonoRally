@@ -4,25 +4,25 @@ using FMOD.Studio;
 
 public class GroundSound : MonoBehaviour {
 
-	private Robot robot;
+	private Wheel wheel;
 	private bool isGrounded;
 	private Rigidbody2D rb;
 
-	[FMODUnity.EventRef]
-	public string soundStateEvent;
+	private string soundStateEvent;
 	private EventInstance soundState;
 
 	// Use this for initialization
 	void Start () {
 
-		robot = RaceManager.instance.robot;
+		wheel = RaceManager.instance.robot.wheel;
+		soundStateEvent = TerrainManager.instance.groundSound;
+
 		soundState = FMODUnity.RuntimeManager.CreateInstance (soundStateEvent);
 
 		if (soundState != null) {
 
 			soundState.start ();
-			GameObject wheel = RaceManager.instance.robot.wheel.gameObject;
-			rb = wheel.GetComponent<Rigidbody2D> ();
+			rb = wheel.gameObject.GetComponent<Rigidbody2D> ();
 			FMODUnity.RuntimeManager.AttachInstanceToGameObject (soundState, wheel.transform, null);
 
 		}
@@ -37,9 +37,9 @@ public class GroundSound : MonoBehaviour {
 
 		float speed = Mathf.Abs (rb.velocity.magnitude);
 		float speedRatio = Mathf.Clamp01 (speed / 20f);
-		float tyreSlip = Mathf.Abs(robot.wheel.GetSlip ());
+		float tyreSlip = Mathf.Abs(wheel.GetSlip ());
 
-		if (robot.wheel.isGrounded) {
+		if (wheel.isGrounded) {
 
 
 			if (tyreSlip > 3) {

@@ -106,8 +106,8 @@ public class Wheel : MonoBehaviour {
 		wheelAngularDrag = data.angularDrag;
 
 		CollisionDetector detector = gameObject.AddComponent<CollisionDetector> ();
+		GroundSound groundSound = gameObject.AddComponent<GroundSound> ();
 		WheelSound sound = gameObject.AddComponent<WheelSound> ();
-
 		sound.detector = detector;
 
 		Debug.Log ("Wheel data loaded");
